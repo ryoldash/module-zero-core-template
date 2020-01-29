@@ -19,11 +19,13 @@ class AuthenticationStore {
 
   @action
   public async login(model: LoginModel) {
+    debugger
     let result = await tokenAuthService.authenticate({
       userNameOrEmailAddress: model.userNameOrEmailAddress,
       password: model.password,
       rememberClient: model.rememberMe,
     });
+    debugger;
 
   }
 

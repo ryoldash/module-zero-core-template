@@ -13,6 +13,7 @@ import { inject, observer } from "mobx-react";
 import Stores from "../../stores/storeIdentifier";
 import { httpServiceFunc } from "../../services/httpService";
 import { Root } from "native-base";
+import { Dimensions } from "react-native";
 
 
 
@@ -72,7 +73,7 @@ export default class RoutingContainer extends React.Component<Props, State> {
     //this functions callback 
   }
   render() {
-   
+    
     return (
       <Root>
         <Routing />
