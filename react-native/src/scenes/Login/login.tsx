@@ -45,8 +45,6 @@ export class Login extends React.Component<Props, State> {
   static navigationOptions({ navigation }: { navigation: any }) {
     return {
       headerShown: false,
-      title: navigation.getParam('itemId'),
-      visible: false
     };
   };
   constructor(props) {
@@ -57,7 +55,7 @@ export class Login extends React.Component<Props, State> {
   }
 
   login = () => {
-    this.props.navigation.navigate('Auth')
+    
     // this.props.authenticationStore!
     //   .login({ userNameOrEmailAddress: this.state.userNameOrEmailAddress, password: this.state.password, rememberMe: false })
     //   .then(() => );
