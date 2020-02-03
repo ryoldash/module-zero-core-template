@@ -9,15 +9,26 @@ import Users from "../../scenes/Users/users";
 import Tenants from "../../scenes/Tenants/tenants";
 import Roles from "../../scenes/Roles/roles";
 import Loader from "../loader/loader";
-import { inject, observer } from "mobx-react";
-import Stores from "../../stores/storeIdentifier";
 import { httpServiceFunc } from "../../services/httpService";
-import { Root } from "native-base";
+import { Root, Button, Icon,Text } from "native-base";
 
 
 
 
-const AppStack = createStackNavigator({ Login: Login });
+const AppStack = createStackNavigator({
+  Login: {
+    screen: Login,
+      }
+}, {
+  navigationOptions: ({ navigation }) => ({
+    tabBarLabel: 'One',
+    tabBarIcon: ({ tintColor }) => <Icon name="list"  color={tintColor} />,
+    title: 'Page One',
+    headerStyle: { backgroundColor: '#2196f3' },
+    headerTintColor: '#fff',
+    headerRight: <Button><Text>asdasdasd</Text></Button>
+  })
+});
 
 const AuthStack = createDrawerNavigator({
   Dashboard: {
@@ -72,7 +83,7 @@ export default class RoutingContainer extends React.Component<Props, State> {
     //this functions callback 
   }
   render() {
-   
+    
     return (
       <Root>
         <Routing />
