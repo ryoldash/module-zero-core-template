@@ -21,7 +21,7 @@ export class httpServiceFunc {
 
 
 const http = axios.create({
-  baseURL: "http://api.eventcloud.aspnetboilerplate.com",
+  baseURL: "http://template-demo.aspnetboilerplate.com",
   timeout: 30000,
   paramsSerializer: function (params) {
     return qs.stringify(params,{
@@ -40,7 +40,7 @@ http.interceptors.request.use(
    
     //   config.headers.common['.AspNetCore.Culture'] = abp.utils.getCookieValue('Abp.Localization.CultureName');
     //   config.headers.common['Abp.TenantId'] = abp.multiTenancy.getTenantIdCookie();
-    config.headers.common['Abp.TenantId'] = 1;
+    //config.headers.common['Abp.TenantId'] = 1;
     return config;
   },
   function (error) {

@@ -30,7 +30,7 @@ export interface Props {
 }
 
 export interface State {
-  email: string;
+  userNameOrEmailAddress: string;
   password: string;
   isTenantModalOpen: boolean;
   tenancyName:string
@@ -45,21 +45,20 @@ export class Login extends React.Component<Props, State> {
   static navigationOptions({ navigation }: { navigation: any }) {
     return {
       headerShown: false,
-      title: navigation.getParam('itemId'),
-      visible: false
     };
   };
   constructor(props) {
     super(props);
     this.state = {
-      email: "", password: "", isTenantModalOpen: false,tenancyName:""
+      userNameOrEmailAddress: "admin", password: "123456Aa", isTenantModalOpen: false,tenancyName:""
     }
   }
 
   login = () => {
-    this.props.authenticationStore!
-      .login({ userNameOrEmailAddress: this.state.email, password: this.state.password, rememberMe: false })
-      .then(() => this.props.navigation.navigate('Auth'));
+    
+    // this.props.authenticationStore!
+    //   .login({ userNameOrEmailAddress: this.state.userNameOrEmailAddress, password: this.state.password, rememberMe: false })
+    //   .then(() => );
   }
   toggleTenantModal = () => {
     this.setState({ isTenantModalOpen: !this.state.isTenantModalOpen })
@@ -83,12 +82,10 @@ export class Login extends React.Component<Props, State> {
         _toast('TenantIsNotActive',"danger");
         break;
     }
-
-
   }
 
   render() {
-    
+    this.login();
     return (
       <Root>
         <KeyboardAvoidingView
@@ -112,7 +109,7 @@ export class Login extends React.Component<Props, State> {
               returnKeyType="next"
               keyboardType="email-address"
               underlineColorAndroid='transparent'
-              onChangeText={(email) => this.setState({ email })} />
+              onChangeText={(email) => this.setState({userNameOrEmailAddress: email })} />
             <TextInput style={styles.inputs}
               returnKeyType="done"
               ref={(ref:any) => { this.password = ref }}
