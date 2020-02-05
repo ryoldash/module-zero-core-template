@@ -1,5 +1,5 @@
 {
-  "name": "ModuleZero",
+  "name": "module-zero-template-react-native",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -8,8 +8,6 @@
     "devtools": "react-devtools"
   },
   "dependencies": {
-    "@babel/plugin-proposal-decorators": "^7.8.3",
-    "@babel/preset-flow": "^7.8.3",
     "@react-native-community/masked-view": "^0.1.6",
     "@react-native-community/netinfo": "^5.3.3",
     "axios": "^0.19.1",
@@ -30,6 +28,8 @@
   "devDependencies": {
     "@babel/core": "^7.5.0",
     "@babel/runtime": "^7.5.0",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/preset-flow": "^7.8.3",
     "@react-native-community/eslint-config": "^0.0.3",
     "@types/jest": "^24.0.18",
     "@types/react": "^16.9.2",
