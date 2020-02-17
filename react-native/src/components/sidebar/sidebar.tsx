@@ -23,9 +23,7 @@ export default class SideBar extends React.Component<Props, State> {
                     }}
                 >
                     <TouchableHighlight
-                        onPress={() => {
-                            alert('asdasd')
-                        }}
+                        onPress={() => {}}
                         underlayColor={'rgba(255,255,255,0)'}
                     >
                         <Image
@@ -41,9 +39,7 @@ export default class SideBar extends React.Component<Props, State> {
                         />
                     </TouchableHighlight>
                     <TouchableHighlight
-                        onPress={() => {
-                            alert('asdasd')
-                        }}
+                        onPress={() => {}}
                         underlayColor={'rgba(255,255,255,0)'}
                     >
                         <Text>@Yasir.Aktunc</Text>
