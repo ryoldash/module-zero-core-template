@@ -8,8 +8,6 @@ import {
     Dimensions,
     KeyboardAvoidingView,
     TouchableOpacity,
-    Alert,
-    Keyboard,
 } from 'react-native';
 import { inject, observer } from 'mobx-react'
 import { Button, Root } from 'native-base';
@@ -22,6 +20,7 @@ import AccountStore from '../../stores/accountStore';
 import TenantAvailabilityState from '../../services/account/dto/tenantAvailabilityState';
 import { _toast } from '../../utils/utils';
 import { Formik } from 'formik'
+import LoginModel from '../../models/Login/loginModel';
 let yup = require('yup')
 
 export interface Props {
@@ -47,11 +46,14 @@ export class Login extends React.Component<Props, State> {
         };
     }
 
-    login = () => {
-        // this.props.authenticationStore!
-        //   .login({ userNameOrEmailAddress: this.state.userNameOrEmailAddress, password: this.state.password, rememberMe: false })
-        //   .then(() => );
-        this.props.navigation.navigate('Auth');
+    login = (value: LoginModel) => {
+        this.props
+            .authenticationStore!.login({
+                userNameOrEmailAddress: value.userNameOrEmailAddress,
+                password: value.password,
+                rememberMe: value.rememberMe,
+            })
+            .then(() => this.props.navigation.navigate('Auth'));
     }
     toggleTenantModal = () => {
         this.setState({ isTenantModalOpen: !this.state.isTenantModalOpen });
@@ -103,7 +105,13 @@ export class Login extends React.Component<Props, State> {
                                 password: yup.string().required(),
                             })}
                             validateOnChange={true}
-                            onSubmit={this.login}
+                            onSubmit={value =>
+                                this.login({
+                                    userNameOrEmailAddress: value.email,
+                                    password: value.password,
+                                    rememberMe: true,
+                                })
+                            }
                         >
                             {({ handleChange, values, handleSubmit, errors, handleBlur }) => (
                                 <>
