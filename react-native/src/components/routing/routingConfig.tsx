@@ -35,6 +35,17 @@ const AuthStack = createDrawerNavigator(
         edgeWidth: 200,
         drawerBackgroundColor: 'rgba(255,255,255,0)',
         contentComponent: props => <SideBar {...props} />,
+        defaultNavigationOptions: ({ navigation }) => ({
+            title: 'asasdasds',
+            headerLeft: (
+                <Button
+                    onPress={() => navigation.toggleDrawer()}
+                    style={{ backgroundColor: 'white' }}
+                >
+                    <Icon type="MaterialCommunityIcons" name="menu" style={{ color: 'black' }} />
+                </Button>
+            ),
+        }),
     },
 );
 
@@ -52,9 +63,13 @@ const AppStack = createStackNavigator(
 
 const AuthStack2 = createStackNavigator(
     {
-        defaultHome: AuthStack,
+        defaultHome: {
+            screen: AuthStack,
+        },
     },
     {
+        initialRouteName: 'defaultHome',
+        headerMode: 'screen',
         defaultNavigationOptions: ({ navigation }) => ({
             title: '',
             headerLeft: (

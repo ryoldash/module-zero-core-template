@@ -24,7 +24,7 @@ export default class SideBar extends React.Component<Props, State> {
                 >
                     <TouchableHighlight
                         onPress={() => {
-                            alert('asdasd')
+                            alert('Selamun aleykum')
                         }}
                         underlayColor={'rgba(255,255,255,0)'}
                     >

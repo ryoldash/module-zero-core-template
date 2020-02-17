@@ -10,7 +10,9 @@
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.6",
     "@react-native-community/netinfo": "^5.3.3",
+    "@types/yup": "^0.26.31",
     "axios": "^0.19.1",
+    "formik": "^2.1.4",
     "mobx": "^5.15.2",
     "mobx-react": "^5.4.4",
     "native-base": "^2.13.8",
@@ -21,11 +23,11 @@
     "react-native-gesture-handler": "^1.5.3",
     "react-native-reanimated": "^1.7.0",
     "react-native-safe-area-context": "^0.6.2",
-    "react-native-vector-icons": "^6.6.0",
     "react-native-svg": "^11.0.1",
     "react-navigation": "^4.0.10",
     "react-navigation-drawer": "^2.3.3",
-    "react-navigation-stack": "^2.0.15"
+    "react-navigation-stack": "^2.0.15",
+    "yup": "^0.28.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",

@@ -1,33 +1,28 @@
 import React from 'react';
-import {Text} from 'react-native';
-import { Button } from 'native-base';
+import { Button, Text, View } from 'native-base';
 import { NavigationStackProp } from 'react-navigation-stack';
 
-
 export interface Props {
-  navigation: NavigationStackProp;
+    navigation: NavigationStackProp
 }
 
-export interface State {
- 
-}
-
+export interface State {}
 
 export class Tenants extends React.Component<Props, State> {
+  
+    constructor(props) {
+        super(props);
+    }
 
-  constructor(props) {
-    super(props);
-
-  }
-
-  render() {
-    return (
-      
-    <Text>Tenants</Text>
-    );
-  }
+    render() {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
+                <Button onPress={() => {}}>
+                    <Text>Tenants</Text>
+                </Button>
+            </View>
+        );
+    }
 }
-
-
 
 export default Tenants;
