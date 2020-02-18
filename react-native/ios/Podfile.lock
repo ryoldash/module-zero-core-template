@@ -89,6 +89,8 @@ PODS:
     - React
   - RNReanimated (1.7.0):
     - React
+  - RNSVG (11.0.1):
+    - React
   - yoga (0.60.5.React)
 
 DEPENDENCIES:
@@ -117,6 +119,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -174,6 +177,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -204,8 +209,9 @@ SPEC CHECKSUMS:
   RNCMaskedView: e5b99bc191945f157adeede68da9d424462de177
   RNGestureHandler: 02905abe54e1f6e59c081a10b4bd689721e17aa6
   RNReanimated: 031fe8d9ea93c2bd689a40f05320ef9d96f74d7f
+  RNSVG: 67f1f12dae2cef6ed59a42cae74a6b8f5a9e7b46
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
-PODFILE CHECKSUM: 1d1a9f3c82c8f65a37f398d00d42e5ead2bf5421
+PODFILE CHECKSUM: 7aedb8471fa305574aea161033a4896ea86e1225
 
 COCOAPODS: 1.8.4
