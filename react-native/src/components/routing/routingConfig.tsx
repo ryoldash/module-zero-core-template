@@ -32,7 +32,7 @@ const AuthStack2 = createStackNavigator(
     },
   },
   {
-    initialRouteName: 'Dashboard',
+    initialRouteName: 'User',
     defaultNavigationOptions: ({ navigation }) => ({
       headerLeft: (
         <Button onPress={() => navigation.toggleDrawer()} style={{ backgroundColor: 'white' }}>
