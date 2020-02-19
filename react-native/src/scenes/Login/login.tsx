@@ -46,14 +46,19 @@ export class Login extends React.Component<Props, State> {
         };
     }
 
+    componentDidMount(){
+        this.props.navigation.navigate('Auth');
+    }
+    
     login = (value: LoginModel) => {
-        this.props
-            .authenticationStore!.login({
-                userNameOrEmailAddress: value.userNameOrEmailAddress,
-                password: value.password,
-                rememberMe: value.rememberMe,
-            })
-            .then(() => this.props.navigation.navigate('Auth'));
+        // this.props
+        //     .authenticationStore!.login({
+        //         userNameOrEmailAddress: value.userNameOrEmailAddress,
+        //         password: value.password,
+        //         rememberMe: value.rememberMe,
+        //     })
+        //     .then(() => this.props.navigation.navigate('Auth'));
+        this.props.navigation.navigate('Auth');
     }
     toggleTenantModal = () => {
         this.setState({ isTenantModalOpen: !this.state.isTenantModalOpen });
