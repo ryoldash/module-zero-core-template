@@ -94,18 +94,18 @@ class Users extends Component<UsersProps, UsersState> {
   constructor(props) {
     super(props);
   }
-  static navigationOptions = ({ navigation, navigationOptions }) => {
-    return {
-      headerRight: () => (
-        <Button
-          onPress={() => alert('This is a button!')}
-          title="Info"
-          color="#fff"
-          children={<Text>+</Text>}
-        />
-      ),
-    };
-  };
+  // static navigationOptions = ({ navigation, navigationOptions }) => {
+  //   return {
+  //     headerRight: () => (
+  //       <Button
+  //         onPress={() => alert('This is a button!')}
+  //         title="Info"
+  //         color="#fff"
+  //         children={<Text>+</Text>}
+  //       />
+  //     ),
+  //   };
+  // };
 
   async componentWillMount() {
     await this.props.userStore!.getAll({ maxResultCount: 10, skipCount: 0, keyword: '' });
