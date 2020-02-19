@@ -18,7 +18,7 @@ export class Dasboard extends React.Component<Props, State> {
 
     render() {
         return (
-            <ScrollView style={styles.container}>
+            <ScrollView style={styles.container} automaticallyAdjustContentInsets={false}>
                 <View style={styles.flexRow}>
                     <View style={[styles.card, styles.dasboardCardtask]}>
                         <View style={styles.flexRow}>

@@ -9,6 +9,7 @@ import Users from '../../scenes/Users/users';
 import Tenants from '../../scenes/Tenants/tenants';
 import Roles from '../../scenes/Roles/roles';
 import Loader from '../loader/loader';
+import Setting from '../../scenes/Setting/setting';
 import { httpServiceFunc } from '../../services/httpService';
 import { Root, Button, Icon } from 'native-base';
 
@@ -26,26 +27,18 @@ const AuthStack = createDrawerNavigator(
         Roles: {
             screen: Roles,
         },
+        Setting: {
+            screen: Setting,
+        },
     },
     {
-        initialRouteName: 'Dashboard',
+        initialRouteName: 'Setting',
         contentOptions: {
             activeTintColor: 'red',
         },
-        edgeWidth: 200,
+        edgeWidth: 50,
         drawerBackgroundColor: 'rgba(255,255,255,0)',
         contentComponent: props => <SideBar {...props} />,
-        defaultNavigationOptions: ({ navigation }) => ({
-            title: 'asasdasds',
-            headerLeft: (
-                <Button
-                    onPress={() => navigation.toggleDrawer()}
-                    style={{ backgroundColor: 'white' }}
-                >
-                    <Icon type="MaterialCommunityIcons" name="menu" style={{ color: 'black' }} />
-                </Button>
-            ),
-        }),
     },
 );
 
@@ -91,7 +84,7 @@ const Routing = createAppContainer(
             Auth: AuthStack2,
         },
         {
-            initialRouteName: 'App',
+            initialRouteName: 'Auth',
         },
     ),
 );

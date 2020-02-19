@@ -96,12 +96,9 @@ export class Login extends React.Component<Props, State> {
                             </TouchableOpacity>
                         </View>
                         <Formik
-                            initialValues={{ email: 'test@gmail.com', password: '123123' }}
+                            initialValues={{ email: 'admin', password: '123qwe' }}
                             validationSchema={yup.object().shape({
-                                email: yup
-                                    .string()
-                                    .email()
-                                    .required(),
+                                email: yup.string().required(),
                                 password: yup.string().required(),
                             })}
                             validateOnChange={true}
