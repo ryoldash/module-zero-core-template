@@ -13,102 +13,109 @@ import Setting from '../../scenes/Setting/setting';
 import { httpServiceFunc } from '../../services/httpService';
 import { Root, Button, Icon } from 'native-base';
 
+const AuthStack2 = createStackNavigator(
+  {
+    Dashboard: {
+      screen: Dasboard,
+    },
+    User: {
+      screen: Users,
+    },
+    Tenants: {
+      screen: Tenants,
+    },
+    Roles: {
+      screen: Roles,
+    },
+    Setting: {
+      screen: Setting,
+    },
+  },
+  {
+    initialRouteName: 'Dashboard',
+    defaultNavigationOptions: ({ navigation }) => ({
+      headerLeft: (
+        <Button onPress={() => navigation.toggleDrawer()} style={{ backgroundColor: 'white' }}>
+          <Icon type="MaterialCommunityIcons" name="menu" style={{ color: 'black' }} />
+        </Button>
+      ),
+    }),
+  },
+);
+
 const AuthStack = createDrawerNavigator(
-    {
-        Dashboard: {
-            screen: Dasboard,
-        },
-        User: {
-            screen: Users,
-        },
-        Tenants: {
-            screen: Tenants,
-        },
-        Roles: {
-            screen: Roles,
-        },
-        Setting: {
-            screen: Setting,
-        },
+  {
+    Dashboard: {
+      screen: AuthStack2,
     },
-    {
-        initialRouteName: 'Setting',
-        contentOptions: {
-            activeTintColor: 'red',
-        },
-        edgeWidth: 50,
-        drawerBackgroundColor: 'rgba(255,255,255,0)',
-        contentComponent: props => <SideBar {...props} />,
+    User: {
+      screen: Users,
     },
+    Tenants: {
+      screen: Tenants,
+    },
+    Roles: {
+      screen: Roles,
+    },
+    Setting: {
+      screen: Setting,
+    },
+  },
+  {
+    initialRouteName: 'Dashboard',
+    contentOptions: {
+      activeTintColor: 'red',
+    },
+    edgeWidth: 50,
+    drawerBackgroundColor: 'rgba(255,255,255,0)',
+    contentComponent: props => <SideBar {...props} />,
+  },
 );
 
 const AppStack = createStackNavigator(
-    {
-        Login: {
-            screen: Login,
-        },
+  {
+    Login: {
+      screen: Login,
     },
-    {
-        initialRouteName: 'Login',
-        headerMode: 'none',
-    },
-);
-
-const AuthStack2 = createStackNavigator(
-    {
-        defaultHome: {
-            screen: AuthStack,
-        },
-    },
-    {
-        initialRouteName: 'defaultHome',
-        headerMode: 'screen',
-        defaultNavigationOptions: ({ navigation }) => ({
-            title: '',
-            headerLeft: (
-                <Button
-                    onPress={() => navigation.toggleDrawer()}
-                    style={{ backgroundColor: 'white' }}
-                >
-                    <Icon type="MaterialCommunityIcons" name="menu" style={{ color: 'black' }} />
-                </Button>
-            ),
-        }),
-    },
+  },
+  {
+    initialRouteName: 'Login',
+    headerMode: "none",
+  },
 );
 
 const Routing = createAppContainer(
-    createSwitchNavigator(
-        {
-            App: AppStack,
-            Auth: AuthStack2,
-        },
-        {
-            initialRouteName: 'Auth',
-        },
-    ),
+  createSwitchNavigator(
+    {
+      App: AppStack,
+      Auth: AuthStack,
+    },
+    {
+      initialRouteName: 'Auth',
+    },
+  ),
 );
 
 interface Props {}
 interface State {
-    loading: boolean
+  loading: boolean;
 }
 
 export default class RoutingContainer extends React.Component<Props, State> {
-    constructor(props) {
-        super(props);
-        this.state = { loading: false };
-        const func = new httpServiceFunc();
-        func.showFunction(() => this.setState({ loading: true }));
-        func.hideFunction(() => this.setState({ loading: false }));
-        //this functions callback
-    }
-    render() {
-        return (
-            <Root>
-                <Routing />
-                <Loader loading={this.state.loading} />
-            </Root>
-        );
-    }
+  constructor(props) {
+    super(props);
+    this.state = { loading: false };
+    const func = new httpServiceFunc();
+    func.showFunction(() => this.setState({ loading: true }));
+    func.hideFunction(() => this.setState({ loading: false }));
+    //this functions callback
+  }
+  render() {
+    return (
+      <Root>
+        <Routing />
+        <Loader loading={this.state.loading} />
+      </Root>
+    );
+  }
 }
