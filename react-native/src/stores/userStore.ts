@@ -10,7 +10,7 @@ import { UpdateUserInput } from '../services/user/dto/updateUserInput';
 import userService from '../services/user/userService';
 
 class UserStore {
-  @observable users!: PagedResultDto<GetUserOutput>;
+  @observable users: PagedResultDto<GetUserOutput>;
   @observable editUser!: CreateOrUpdateUserInput;
   @observable roles: GetRoles[] = [];
 
@@ -24,7 +24,9 @@ class UserStore {
   async update(updateUserInput: UpdateUserInput) {
     let result = await userService.update(updateUserInput);
     this.users.items = this.users.items.map((x: GetUserOutput) => {
-      if (x.id === updateUserInput.id) x = result;
+      if (x.id === updateUserInput.id) {
+        x = result;
+      }
       return x;
     });
   }

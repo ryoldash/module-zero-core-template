@@ -7,11 +7,9 @@ import { observer, inject } from 'mobx-react';
 import Stores from '../../stores/storeIdentifier';
 
 interface UsersProps {
- userStore: UserStore,
+  userStore: UserStore;
 }
-interface UsersState {
-  listViewData: String[],
-}
+interface UsersState {}
 
 const styles = StyleSheet.create({
   rowFront: {
@@ -54,29 +52,38 @@ const styles = StyleSheet.create({
 
 @inject(Stores.UserStore)
 @observer
-class Users extends Component<UsersProps,UsersState> {
+class Users extends Component<UsersProps, UsersState> {
   constructor(props) {
     super(props);
-    this.state={
-      listViewData: [
-        "Ali",
-        "Veli",
-        "Ahmet",
-        "Kadir"
-      ]
-    }
+  }
+  // static navigationOptions = ({ navigation, navigationOptions }) => {
+  //   return {
+  //     headerRight: () => (
+  //       <Button
+  //         onPress={() => alert('This is a button!')}
+  //         title="Info"
+  //         color="#fff"
+  //         children={<Text>+</Text>}
+  //       />
+  //     ),
+  //   };
+  // };
+
+  async componentWillMount() {
+    await this.props.userStore!.getAll({ maxResultCount: 10, skipCount: 0, keyword: '' });
   }
 
   render() {
+    const { users } = this.props.userStore!;
     return (
       <SwipeListView
-      data={this.state.listViewData}
-      renderItem={ (data, rowMap) => (
+        data={users == undefined ? [] : users.items}
+        renderItem={data => (
           <View style={styles.rowFront}>
-              <Text>I am {data.item} in a SwipeListView</Text>
+            <Text>{data.item.userName}</Text>
           </View>
-      )}
-      renderHiddenItem={ (data, rowMap) => (
+        )}
+        renderHiddenItem={() => (
           <View style={styles.rowBack}>
             <Button style={styles.rowBackLeft}>
               <Icon style={styles.editIcon} type="FontAwesome" name="edit"></Icon>
@@ -85,10 +92,10 @@ class Users extends Component<UsersProps,UsersState> {
               <Icon style={styles.trashIcon} type="FontAwesome" name="trash"></Icon>
             </Button>
           </View>
-      )}
-      leftOpenValue={75}
-      rightOpenValue={-75}
-  />
+        )}
+        leftOpenValue={75}
+        rightOpenValue={-75}
+      />
     );
   }
 }

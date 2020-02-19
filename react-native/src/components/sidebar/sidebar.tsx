@@ -22,10 +22,7 @@ export default class SideBar extends React.Component<Props, State> {
                         borderTopRightRadius: 0,
                     }}
                 >
-                    <TouchableHighlight
-                        onPress={() => {}}
-                        underlayColor={'rgba(255,255,255,0)'}
-                    >
+                    <TouchableHighlight onPress={() => {}} underlayColor={'rgba(255,255,255,0)'}>
                         <Image
                             source={{
                                 uri: 'https://avatars1.githubusercontent.com/u/37835086?s=400&v=4',
@@ -38,10 +35,7 @@ export default class SideBar extends React.Component<Props, State> {
                             }}
                         />
                     </TouchableHighlight>
-                    <TouchableHighlight
-                        onPress={() => {}}
-                        underlayColor={'rgba(255,255,255,0)'}
-                    >
+                    <TouchableHighlight onPress={() => {}} underlayColor={'rgba(255,255,255,0)'}>
                         <Text>@Yasir.Aktunc</Text>
                     </TouchableHighlight>
                 </View>
@@ -73,26 +67,19 @@ export default class SideBar extends React.Component<Props, State> {
                     style={{
                         flex: 1,
                         flexDirection: 'row',
-                        justifyContent: 'flex-end',
+                        justifyContent: 'flex-start',
                         alignItems: 'center',
-                        marginRight: 10,
+                        marginLeft: 10,
                     }}
                 >
                     <Icon
-                        name="logout"
-                        type="MaterialCommunityIcons"
+                        name="power-off"
+                        type="FontAwesome"
                         onPress={() => {
                             this.props.navigation!.navigate('App')
                         }}
                     />
-                    <TouchableHighlight
-                        onPress={() => {
-                            this.props.navigation!.navigate('App')
-                        }}
-                        underlayColor={'rgba(255,255,255,0)'}
-                    >
-                        <Text>Sign Out</Text>
-                    </TouchableHighlight>
+                    <Text style={{ marginLeft: 10 }}>Log Out</Text>
                 </View>
             </Container>
         )
