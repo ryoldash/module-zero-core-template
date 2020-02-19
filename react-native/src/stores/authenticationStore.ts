@@ -1,17 +1,12 @@
 import { action, observable } from 'mobx';
 
-
 import LoginModel from '../models/Login/loginModel';
 import tokenAuthService from '../services/tokenAuth/tokenAuthService';
-
-
-
-
 
 class AuthenticationStore {
   @observable loginModel: LoginModel = new LoginModel();
 
-   isAuthenticated(): boolean {
+  isAuthenticated(): boolean {
     // if (!abp.session.userId) return false;
 
     return true;
@@ -19,19 +14,14 @@ class AuthenticationStore {
 
   @action
   public async login(model: LoginModel) {
-    debugger
     let result = await tokenAuthService.authenticate({
       userNameOrEmailAddress: model.userNameOrEmailAddress,
       password: model.password,
       rememberClient: model.rememberMe,
     });
-    debugger;
-
   }
 
   @action
-  logout() {
-   
-  }
+  logout() {}
 }
 export default AuthenticationStore;
