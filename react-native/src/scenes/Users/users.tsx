@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import "react-native-swipe-list-view/"
-import { View, Text, Icon } from 'native-base';
+import { View, Text, Icon, Button } from 'native-base';
 import { StyleSheet } from 'react-native';
 import UserStore from '../../stores/userStore';
 import { observer, inject } from 'mobx-react';
@@ -15,79 +14,42 @@ interface UsersState {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    flex: 1,
-  },
-  standalone: {
-    marginTop: 30,
-    marginBottom: 30,
-  },
-  standaloneRowFront: {
-    alignItems: 'center',
-    backgroundColor: '#CCC',
-    justifyContent: 'center',
-    height: 50,
-  },
-  standaloneRowBack: {
-    alignItems: 'center',
-    backgroundColor: '#8BC645',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 15,
-  },
-  backTextWhite: {
-    color: '#FFF',
-  },
   rowFront: {
     alignItems: 'center',
-    backgroundColor: '#CCC',
-    borderBottomColor: 'black',
+    backgroundColor: '#F5F5F5',
+    borderBottomColor: '#BDBDBD',
     borderBottomWidth: 1,
     justifyContent: 'center',
     height: 50,
   },
   rowBack: {
     alignItems: 'center',
-    backgroundColor: '#DDD',
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingLeft: 15,
+    // paddingLeft: 15,
+    // paddingRight: 15,
   },
-  backRightBtn: {
-    alignItems: 'center',
-    bottom: 0,
-    justifyContent: 'center',
-    position: 'absolute',
-    top: 0,
+  rowBackLeft: {
     width: 75,
+    backgroundColor: "#303F9F",
+    margin: 0,
+    borderRadius:0,
+    justifyContent: "center"
   },
-  backRightBtnLeft: {
-    backgroundColor: 'blue',
-    right: 75,
+  rowBackRight: {
+    width: 75,
+    backgroundColor: "#d32f2f",
+    margin: 0,
+    borderRadius: 0,
+    justifyContent: "center"
   },
-  backRightBtnRight: {
-    backgroundColor: 'red',
-    right: 0,
+  editIcon: {
+    color: "#fff",
   },
-  controls: {
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  switchContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 5,
-  },
-  switch: {
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'black',
-    paddingVertical: 10,
-    width: 100,
-  },
+  trashIcon: {
+    color: "#fff",
+  }
 });
 
 @inject(Stores.UserStore)
@@ -116,8 +78,12 @@ class Users extends Component<UsersProps,UsersState> {
       )}
       renderHiddenItem={ (data, rowMap) => (
           <View style={styles.rowBack}>
-              <Text>Left</Text>
-              <Text><Icon type="FontAwesome" name="trash"></Icon></Text>
+            <Button style={styles.rowBackLeft}>
+              <Icon style={styles.editIcon} type="FontAwesome" name="edit"></Icon>
+            </Button>
+            <Button style={styles.rowBackRight}>
+              <Icon style={styles.trashIcon} type="FontAwesome" name="trash"></Icon>
+            </Button>
           </View>
       )}
       leftOpenValue={75}
