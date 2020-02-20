@@ -67,12 +67,12 @@ const AuthStack = createDrawerNavigator(
   },
   {
     initialRouteName: 'Dashboard',
-    contentOptions: {
-      activeTintColor: 'red',
-    },
     edgeWidth: 50,
-    drawerBackgroundColor: 'rgba(255,255,255,0)',
     contentComponent: props => <SideBar {...props} />,
+    // contentOptions: {
+    //   activeTintColor: '#00CBFF',
+    //   activeBackgroundColor: '#F6F6F6',
+    // },
   },
 );
 

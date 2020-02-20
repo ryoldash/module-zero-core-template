@@ -108,6 +108,7 @@ class Users extends Component<UsersProps, UsersState> {
   // };
 
   async componentWillMount() {
+    debugger;
     await this.props.userStore!.getAll({ maxResultCount: 10, skipCount: 0, keyword: '' });
   }
 
