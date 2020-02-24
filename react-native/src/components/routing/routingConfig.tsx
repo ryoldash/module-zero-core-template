@@ -19,7 +19,7 @@ const AuthStack2 = createStackNavigator(
     Dashboard: {
       screen: Dasboard,
     },
-    User: {
+    Users: {
       screen: Users,
     },
     Tenants: {

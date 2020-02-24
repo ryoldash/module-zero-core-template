@@ -32,7 +32,7 @@ http.interceptors.request.use(
 
     //  if (!!abp.auth.getToken()) {
     config.headers.common.Authorization =
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJBc3BOZXQuSWRlbnRpdHkuU2VjdXJpdHlTdGFtcCI6ImM1ZTFkMjViLWU1MmItNWQ5Zi1kMDYwLTM5ZjJkZjE2ZmNmZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwic3ViIjoiMSIsImp0aSI6ImU5ZTJkYTI2LWQ1NGYtNDcyYS1iYjI0LWVmZWZiNGNkMTQ2MSIsImlhdCI6MTU4MjIyMzA0MiwibmJmIjoxNTgyMjIzMDQyLCJleHAiOjE1ODIzMDk0NDIsImlzcyI6IlRlbXBsYXRlRGVtbyIsImF1ZCI6IlRlbXBsYXRlRGVtbyJ9.dDrTLJRotbMHC_KYz7wffHhbzaFJZ5V5VoeqtYHOmY0';
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJBc3BOZXQuSWRlbnRpdHkuU2VjdXJpdHlTdGFtcCI6ImM1ZTFkMjViLWU1MmItNWQ5Zi1kMDYwLTM5ZjJkZjE2ZmNmZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwic3ViIjoiMSIsImp0aSI6ImIwZWY5ZjAwLTBkNGYtNDUyNC1iZmMwLTU3NmViNGRlY2JiMSIsImlhdCI6MTU4MjU2NTE2NSwibmJmIjoxNTgyNTY1MTY1LCJleHAiOjE1ODI2NTE1NjUsImlzcyI6IlRlbXBsYXRlRGVtbyIsImF1ZCI6IlRlbXBsYXRlRGVtbyJ9.ggpPvsAq9yPH9cwKZVLZwFB6nOkV3c2eNTzVIL0nNH8';
     //  }
 
     //   config.headers.common['.AspNetCore.Culture'] = abp.utils.getCookieValue('Abp.Localization.CultureName');
@@ -52,7 +52,6 @@ http.interceptors.response.use(
   },
   error => {
     hideFunc();
-    debugger;
     if (
       !!error.response &&
       !!error.response.data.error &&
