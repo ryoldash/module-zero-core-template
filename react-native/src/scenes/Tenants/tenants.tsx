@@ -41,15 +41,6 @@ export class Tenants extends React.Component<Props, State> {
     const { tenants } = this.props.tenantStore!;
     return (
       <Container>
-        {/* <Button
-          onPress={() =>
-            this.props.navigation.navigate('CreateOrEditTenant', {
-              id: "1",
-            })
-          }
-        >
-          <Text>asdasdas</Text>
-        </Button> */}
         <SwipeListView
           useFlatList
           refreshControl={
@@ -62,7 +53,6 @@ export class Tenants extends React.Component<Props, State> {
           closeOnRowOpen
           closeOnRowBeginSwipe
           closeOnScroll
-          keys={Math.random()}
           data={tenants === undefined ? [] : tenants.items}
           renderItem={data => (
             <View style={styles.rowFront}>

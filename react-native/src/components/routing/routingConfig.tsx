@@ -13,6 +13,7 @@ import Setting from '../../scenes/Setting/setting';
 import { httpServiceFunc } from '../../services/httpService';
 import { Root, Button, Icon } from 'native-base';
 import { CreateOrEditTenant } from '../../scenes/Tenants/createOrEditTenant';
+import { CreateOrEditRole } from '../../scenes/Roles/createOrEditRole';
 
 const AuthStack2 = createStackNavigator(
   {
@@ -34,9 +35,12 @@ const AuthStack2 = createStackNavigator(
     CreateOrEditTenant: {
       screen: CreateOrEditTenant,
     },
+    CreateOrEditRoles: {
+      screen: CreateOrEditRole,
+    },
   },
   {
-    initialRouteName: 'Tenants',
+    initialRouteName: 'Roles',
     defaultNavigationOptions: ({ navigation }) => ({
       headerLeft: (
         <Button onPress={() => navigation.toggleDrawer()} style={{ backgroundColor: 'white' }}>
