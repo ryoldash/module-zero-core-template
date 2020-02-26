@@ -76,9 +76,16 @@ export class CreateOrEditRole extends React.Component<Props, State> {
       await this.props.roleStore.getAllPermissions();
     }
   }
-  createOrUpdateRole = value => {
-    debugger;
-    this.props.roleStore!.update();
+  createOrUpdateRole = async value => {
+    if (this.isEdit()) {
+      await this.props.roleStore.update({
+        id: parseInt(this.props.navigation.getParam('id')),
+        ...value,
+      });
+    } else {
+      await this.props.roleStore.create(value);
+    }
+
     // if (this.isEdit()) {
     //   this.propss
     //     .tenantStore!.update({
