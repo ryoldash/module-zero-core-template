@@ -6,6 +6,7 @@ import { PagedResultDto } from '../../services/dto/pagedResultDto';
 import { PagedUserResultRequestDto } from "./dto/PagedUserResultRequestDto";
 import { UpdateUserInput } from './dto/updateUserInput';
 import http from '../httpService';
+import { ChangePasswordInput } from './dto/changePasswordInput';
 
 class UserService {
   public async create(createUserInput: CreateOrUpdateUserInput) {
@@ -33,13 +34,25 @@ class UserService {
     return result.data;
   }
 
+  public async changePassword(changePassword: ChangePasswordInput) {
+    let result = await http.post(
+      'api/services/app/User/ChangeLanguage/ChangePassword',
+      changePassword,
+    );
+    return result.data;
+  }
+
   public async get(entityDto: EntityDto): Promise<CreateOrUpdateUserInput> {
     let result = await http.get('api/services/app/User/Get', { params: entityDto });
     return result.data.result;
   }
 
-    public async getAll(pagedFilterAndSortedRequest: PagedUserResultRequestDto): Promise<PagedResultDto<GetAllUserOutput>> {
-    let result = await http.get('api/services/app/User/GetAll', { params: pagedFilterAndSortedRequest });
+  public async getAll(
+    pagedFilterAndSortedRequest: PagedUserResultRequestDto,
+  ): Promise<PagedResultDto<GetAllUserOutput>> {
+    let result = await http.get('api/services/app/User/GetAll', {
+      params: pagedFilterAndSortedRequest,
+    });
     return result.data.result;
   }
 }

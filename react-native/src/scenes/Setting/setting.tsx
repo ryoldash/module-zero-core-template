@@ -14,24 +14,23 @@ import {
   Text,
   Tabs,
   Tab,
-  ListItem,
-  Left,
-  Right,
-  Radio,
+  Form,
+  Picker,
 } from 'native-base';
 import { StyleSheet } from 'react-native';
 import Stores from '../../stores/storeIdentifier';
-import AccountStore from '../../stores/accountStore';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import UserStore from '../../stores/userStore';
+import { _toast } from '../../utils/utils';
 
 export interface Props {
-  accountStore?: AccountStore;
+  userStore?: UserStore;
 }
 
 export interface State {}
 
-@inject(Stores.AccountStore)
+@inject(Stores.UserStore)
 @observer
 export class Setting extends React.Component<Props, State> {
   newpassword: any;
@@ -47,6 +46,16 @@ export class Setting extends React.Component<Props, State> {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
+  };
+
+  changePassword = async values => {
+    debugger;
+    await this.props
+      .userStore!.changePassword({
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      })
+      .then(() => _toast('Şifre Değiştirildi', 'success'));
   };
 
   render() {
@@ -82,7 +91,7 @@ export class Setting extends React.Component<Props, State> {
                           .required(),
                       })}
                       validateOnChange={true}
-                      onSubmit={value => console.log(value.currentPassword)}
+                      onSubmit={values => this.changePassword(values)}
                     >
                       {({ handleChange, values, handleSubmit, errors, handleBlur }) => (
                         <>
@@ -172,22 +181,25 @@ export class Setting extends React.Component<Props, State> {
               activeTabStyle={{ backgroundColor: 'white' }}
               activeTextStyle={{ color: '#3F51B5', fontWeight: 'normal' }}
             >
-              <ListItem selected={false}>
-                <Left>
-                  <Text>Lunch Break</Text>
-                </Left>
-                <Right>
-                  <Radio color={this.getRandomColor()} selectedColor={'#5cb85c'} selected={true} />
-                </Right>
-              </ListItem>
-              <ListItem selected={true}>
-                <Left>
-                  <Text>Discussion with Client</Text>
-                </Left>
-                <Right>
-                  <Radio color={this.getRandomColor()} selectedColor={'#5cb85c'} selected={true} />
-                </Right>
-              </ListItem>
+              <Form>
+                <Item picker>
+                  <Picker
+                    mode="dropdown"
+                    iosIcon={<Icon name="arrow-down" />}
+                    style={{ width: undefined }}
+                    placeholder="Select your SIM"
+                    placeholderStyle={{ color: "#bfc6ea" }}
+                    placeholderIconColor="#007aff"
+                    selectedValue={"key0"}
+                  >
+                    <Picker.Item label="Wallet" value="key0" />
+                    <Picker.Item label="ATM Card" value="key1" />
+                    <Picker.Item label="Debit Card" value="key2" />
+                    <Picker.Item label="Credit Card" value="key3" />
+                    <Picker.Item label="Net Banking" value="key4" />
+                  </Picker>
+                </Item>
+              </Form>
             </Tab>
           </Tabs>
         </Content>

@@ -90,7 +90,7 @@ class Users extends Component<UsersProps, UsersState> {
             position="bottomRight"
             onPress={() =>
               this.props.navigation.navigate('CreateOrEditUser', {
-                id: "1",
+                id: "",
               })
             }
           >

@@ -238,6 +238,9 @@ export class CreateOrEditTenant extends React.Component<Props, State> {
                         />
                         <Label> Is Active</Label>
                       </View>
+
+                      {!this.isEdit() && <Label>Default Password 123qwe</Label>}
+
                       <Button onPress={handleSubmit} style={styles.marginVrtcl} block rounded>
                         <Text>Save</Text>
                       </Button>

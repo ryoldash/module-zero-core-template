@@ -32,6 +32,12 @@ export interface Props {
   navigation: NavigationScreenProp<NavigationRoute<Params>, Params>;
 }
 
+interface RoleSwitch {
+  name: string;
+  displayName: string;
+  value: boolean;
+}
+
 export interface State {}
 
 @inject(Stores.RoleStore)
@@ -76,43 +82,34 @@ export class CreateOrEditRole extends React.Component<Props, State> {
       await this.props.roleStore.getAllPermissions();
     }
   }
-  createOrUpdateRole = async value => {
-    if (this.isEdit()) {
-      await this.props.roleStore.update({
-        id: parseInt(this.props.navigation.getParam('id')),
-        ...value,
-      });
-    } else {
-      await this.props.roleStore.create(value);
-    }
-
+  createOrUpdateRole = async values => {
+    values.roleNames = values.roleNames
+      .filter((x: RoleSwitch) => x.value === true)
+      .map((x: RoleSwitch) => x.name);
+    debugger;
     // if (this.isEdit()) {
-    //   this.propss
-    //     .tenantStore!.update({
+    //   await this.props.roleStore
+    //     .update({
     //       id: parseInt(this.props.navigation.getParam('id')),
-    //       tenancyName: value.tenancyName,
-    //       isActive: value.isActive,
-    //       name: value.name,
+    //       ...value,
     //     })
     //     .then(() => _toast('Update başarılı', 'success'));
     // } else {
-    //   this.props
-    //     .tenantStore!.create({
-    //       tenancyName: value.tenancyName,
-    //       isActive: value.isActive,
-    //       name: value.name,
-    //       connectionString: value.databaseConnectionString,
-    //       adminEmailAddress: value.emailAdress,
-    //     })
-    //     .then(() => _toast('Tenant Oluşturuldu', 'success'));
+    //   await this.props.roleStore.create(value).then(() => _toast('Role Oluşturuldu', 'success'));
     // }
   };
 
   render() {
     const { roleEdit, allPermissions } = this.props.roleStore!;
+
     const grantedPermissions = allPermissions.map((x: GetAllPermissionsOutput) => {
-      return roleEdit.grantedPermissionNames.indexOf(x.name) != -1;
+      if (roleEdit.grantedPermissionNames.indexOf(x.name) !== -1) {
+        return { value: true, name: x.name, displayName: x.displayName };
+      } else {
+        return { value: false, name: x.name, displayName: x.displayName };
+      }
     });
+
     return (
       <Container>
         <Content padder>
@@ -131,7 +128,13 @@ export class CreateOrEditRole extends React.Component<Props, State> {
                     displayName: yup.string().required(),
                     name: yup.string().required(),
                     decription: yup.string(),
-                    grantedPermissions: yup.array().required(),
+                    grantedPermissions: yup.array().of(
+                      yup.object().shape({
+                        value: yup.bool(),
+                        name: yup.string(),
+                        displayName: yup.string(),
+                      }),
+                    ),
                   })}
                   validateOnChange={true}
                   onSubmit={value => this.createOrUpdateRole(value)}
@@ -213,7 +216,7 @@ export class CreateOrEditRole extends React.Component<Props, State> {
                           flex: 1,
                         }}
                       >
-                        {allPermissions.map((x: GetAllPermissionsOutput, index) => {
+                        {grantedPermissions.map((x: RoleSwitch, index) => {
                           return (
                             <View
                               style={{
@@ -223,9 +226,12 @@ export class CreateOrEditRole extends React.Component<Props, State> {
                               }}
                             >
                               <Switch
-                                value={values.grantedPermissions[index]}
+                                value={x.value}
                                 onValueChange={value =>
-                                  setFieldValue(`grantedPermissions[${index}]`, value)
+                                  setFieldValue(`grantedPermissions[${index}]`, {
+                                    ...x,
+                                    value: value,
+                                  })
                                 }
                               />
                               <Label>{x.displayName}</Label>

@@ -4,12 +4,12 @@ import IsTenantAvaibleOutput from '../services/account/dto/isTenantAvailableOutp
 import accountService from '../services/account/accountService';
 
 class AccountStore {
-    @observable tenant: IsTenantAvaibleOutput = new IsTenantAvaibleOutput()
+  @observable tenant: IsTenantAvaibleOutput = new IsTenantAvaibleOutput();
 
-    @action
-    public isTenantAvailable = async (tenancyName: string) => {
-        this.tenant = await accountService.isTenantAvailable({ tenancyName: tenancyName });
-    }
+  @action
+  public isTenantAvailable = async (tenancyName: string) => {
+    this.tenant = await accountService.isTenantAvailable({ tenancyName: tenancyName });
+  };
 }
 
 export default AccountStore;
