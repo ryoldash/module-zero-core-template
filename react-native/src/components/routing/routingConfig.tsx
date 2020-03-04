@@ -13,13 +13,15 @@ import Setting from '../../scenes/Setting/setting';
 import { httpServiceFunc } from '../../services/httpService';
 import { Root, Button, Icon } from 'native-base';
 import { CreateOrEditTenant } from '../../scenes/Tenants/createOrEditTenant';
+import { CreateOrEditRole } from '../../scenes/Roles/createOrEditRole';
+import CreateOrEdituser from '../../scenes/Users/createOrEditUser';
 
 const AuthStack2 = createStackNavigator(
   {
     Dashboard: {
       screen: Dasboard,
     },
-    User: {
+    Users: {
       screen: Users,
     },
     Tenants: {
@@ -34,9 +36,15 @@ const AuthStack2 = createStackNavigator(
     CreateOrEditTenant: {
       screen: CreateOrEditTenant,
     },
+    CreateOrEditRoles: {
+      screen: CreateOrEditRole,
+    },
+    CreateOrEditUser: {
+      screen: CreateOrEdituser,
+    },
   },
   {
-    initialRouteName: 'User',
+    initialRouteName: 'Users',
     defaultNavigationOptions: ({ navigation }) => ({
       headerLeft: (
         <Button onPress={() => navigation.toggleDrawer()} style={{ backgroundColor: 'white' }}>
@@ -67,11 +75,7 @@ const AuthStack = createDrawerNavigator(
   },
   {
     initialRouteName: 'Dashboard',
-    contentOptions: {
-      activeTintColor: 'red',
-    },
     edgeWidth: 50,
-    drawerBackgroundColor: 'rgba(255,255,255,0)',
     contentComponent: props => <SideBar {...props} />,
   },
 );

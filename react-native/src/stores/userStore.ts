@@ -8,10 +8,13 @@ import { PagedResultDto } from '../services/dto/pagedResultDto';
 import { PagedUserResultRequestDto } from '../services/user/dto/PagedUserResultRequestDto';
 import { UpdateUserInput } from '../services/user/dto/updateUserInput';
 import userService from '../services/user/userService';
+import { UserModel } from '../models/Users/UserModel';
+import { ChangePassword } from '../services/user/dto/changePassword';
+import { ChangePasswordInput } from '../services/user/dto/changePasswordInput';
 
 class UserStore {
   @observable users: PagedResultDto<GetUserOutput>;
-  @observable editUser!: CreateOrUpdateUserInput;
+  @observable editUser: UserModel = new UserModel();
   @observable roles: GetRoles[] = [];
 
   @action
@@ -22,6 +25,7 @@ class UserStore {
 
   @action
   async update(updateUserInput: UpdateUserInput) {
+    debugger;
     let result = await userService.update(updateUserInput);
     this.users.items = this.users.items.map((x: GetUserOutput) => {
       if (x.id === updateUserInput.id) {
@@ -56,7 +60,7 @@ class UserStore {
       name: '',
       surname: '',
       emailAddress: '',
-      isActive: false,
+      isActive: true,
       roleNames: [],
       password: '',
       id: 0,
@@ -72,6 +76,10 @@ class UserStore {
 
   async changeLanguage(languageName: string) {
     await userService.changeLanguage({ languageName: languageName });
+  }
+
+  async changePassword(changePassword: ChangePasswordInput) {
+    await userService.changePassword(changePassword);
   }
 }
 

@@ -11,7 +11,7 @@ interface UsersProps {
   userStore: UserStore;
   navigation: NavigationStackProp;
 }
-interface UsersState { }
+interface UsersState {}
 
 @inject(Stores.UserStore)
 @observer
@@ -19,6 +19,18 @@ class Users extends Component<UsersProps, UsersState> {
   constructor(props) {
     super(props);
   }
+  // static navigationOptions = ({ navigation, navigationOptions }) => {
+  //   return {
+  //     headerRight: () => (
+  //       <Button
+  //         onPress={() => alert('This is a button!')}
+  //         title="Info"
+  //         color="#fff"
+  //         children={<Text>+</Text>}
+  //       />
+  //     ),
+  //   };
+  // };
 
   async componentWillMount() {
     await this.props.userStore!.getAll({ maxResultCount: 10, skipCount: 0, keyword: '' });
@@ -29,13 +41,13 @@ class Users extends Component<UsersProps, UsersState> {
     return (
       <Container>
         <SwipeListView
-          data={users == undefined ? [] : users.items}
+          data={users === undefined ? [] : users.items}
           renderItem={data => (
             <View style={styles.rowFront}>
               <Text>{data.item.userName}</Text>
             </View>
           )}
-          renderHiddenItem={(data) => (
+          renderHiddenItem={data => (
             <View style={styles.rowBack}>
               <Button
                 onPress={() =>
@@ -45,26 +57,27 @@ class Users extends Component<UsersProps, UsersState> {
                 }
                 style={styles.rowBackLeft}
               >
-                <Icon style={styles.editIcon} type="FontAwesome" name="edit"></Icon>
+                <Icon style={styles.editIcon} type="FontAwesome" name="edit" />
               </Button>
-              <Button 
+              <Button
                 onPress={() =>
                   ActionSheet.show(
                     {
-                      options: [ "Delete", "Cancel"],
+                      options: ['Delete', "Cancel"],
                       cancelButtonIndex: 1,
                       destructiveButtonIndex: 0,
-                      title: "Are you sure you want to delete?"
+                      title: "Are you sure you want to delete?",
                     },
-                    (buttonIndex) => {
-                      if(buttonIndex === 0){
-                        this.props.userStore.delete({id: data.item.id});
+                    buttonIndex => {
+                      if (buttonIndex === 0) {
+                        this.props.userStore.delete({ id: data.item.id });
                       }
-                    }
-                  )}
+                    },
+                  )
+                }
                 style={styles.rowBackRight}
               >
-                <Icon style={styles.trashIcon} type="FontAwesome" name="trash"></Icon>
+                <Icon style={styles.trashIcon} type="FontAwesome" name="trash" />
               </Button>
             </View>
           )}
@@ -77,7 +90,7 @@ class Users extends Component<UsersProps, UsersState> {
             position="bottomRight"
             onPress={() =>
               this.props.navigation.navigate('CreateOrEditUser', {
-                id: "1",
+                id: "",
               })
             }
           >
@@ -109,21 +122,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#303F9F",
     margin: 0,
     borderRadius: 0,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   rowBackRight: {
     width: 75,
     backgroundColor: "#d32f2f",
     margin: 0,
     borderRadius: 0,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   editIcon: {
     color: "#fff",
   },
   trashIcon: {
     color: "#fff",
-  }
+  },
 });
 
 export default Users;
