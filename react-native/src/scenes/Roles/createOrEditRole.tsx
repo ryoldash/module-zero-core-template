@@ -83,20 +83,22 @@ export class CreateOrEditRole extends React.Component<Props, State> {
     }
   }
   createOrUpdateRole = async values => {
-    values.roleNames = values.roleNames
+    const roleName = values.grantedPermissions
       .filter((x: RoleSwitch) => x.value === true)
       .map((x: RoleSwitch) => x.name);
-    debugger;
-    // if (this.isEdit()) {
-    //   await this.props.roleStore
-    //     .update({
-    //       id: parseInt(this.props.navigation.getParam('id')),
-    //       ...value,
-    //     })
-    //     .then(() => _toast('Update başarılı', 'success'));
-    // } else {
-    //   await this.props.roleStore.create(value).then(() => _toast('Role Oluşturuldu', 'success'));
-    // }
+    if (this.isEdit()) {
+      await this.props.roleStore
+        .update({
+          id: parseInt(this.props.navigation.getParam('id')),
+          ...values,
+          grantedPermissions: roleName,
+        })
+        .then(() => _toast('Update başarılı', 'success'));
+    } else {
+      await this.props.roleStore
+        .create({ ...values, grantedPermissions: roleName })
+        .then(() => _toast('Role Oluşturuldu', 'success'));
+    }
   };
 
   render() {
@@ -109,7 +111,6 @@ export class CreateOrEditRole extends React.Component<Props, State> {
         return { value: false, name: x.name, displayName: x.displayName };
       }
     });
-
     return (
       <Container>
         <Content padder>
@@ -136,10 +137,19 @@ export class CreateOrEditRole extends React.Component<Props, State> {
                       }),
                     ),
                   })}
+                  validateOnBlur={true}
                   validateOnChange={true}
                   onSubmit={value => this.createOrUpdateRole(value)}
                 >
-                  {({ handleChange, values, handleSubmit, errors, handleBlur, setFieldValue }) => (
+                  {({
+                    handleChange,
+                    values,
+                    handleSubmit,
+                    errors,
+                    handleBlur,
+                    setFieldValue,
+                    isValid,
+                  }) => (
                     <>
                       <Item
                         style={styles.marginVrtcl}
@@ -161,7 +171,6 @@ export class CreateOrEditRole extends React.Component<Props, State> {
                           <Icon name="checkmark-circle" />
                         )}
                       </Item>
-
                       <Item
                         style={styles.marginVrtcl}
                         error={!!errors.name}
@@ -216,31 +225,35 @@ export class CreateOrEditRole extends React.Component<Props, State> {
                           flex: 1,
                         }}
                       >
-                        {grantedPermissions.map((x: RoleSwitch, index) => {
-                          return (
-                            <View
-                              style={{
-                                flexDirection: "row",
-                                marginVertical: 10,
-                                width: Math.round(Dimensions.get("window").width / 3),
-                              }}
-                            >
-                              <Switch
-                                value={x.value}
-                                onValueChange={value =>
-                                  setFieldValue(`grantedPermissions[${index}]`, {
-                                    ...x,
-                                    value: value,
-                                  })
-                                }
-                              />
-                              <Label>{x.displayName}</Label>
-                            </View>
-                          );
-                        })}
+                        {values.grantedPermissions.map((x: RoleSwitch, index) => (
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              marginVertical: 10,
+                              width: Math.round(Dimensions.get("window").width / 3),
+                            }}
+                          >
+                            <Switch
+                              value={x.value}
+                              onValueChange={value =>
+                                setFieldValue(`grantedPermissions[${index}]`, {
+                                  ...x,
+                                  value: value,
+                                })
+                              }
+                            />
+                            <Label>{x.displayName}</Label>
+                          </View>
+                        ))}
                       </View>
-                      <Button onPress={handleSubmit} style={styles.marginVrtcl} block rounded>
-                        <Text>Save</Text>
+                      <Button
+                        disabled={!isValid}
+                        onPress={handleSubmit}
+                        style={styles.marginVrtcl}
+                        block
+                        rounded
+                      >
+                        <Text>{this.isEdit() ? 'Save' : 'Create'}</Text>
                       </Button>
                     </>
                   )}

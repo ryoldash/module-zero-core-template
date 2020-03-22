@@ -46,7 +46,6 @@ export class Login extends React.Component<Props, State> {
     };
   }
 
-
   login = (value: LoginModel) => {
     this.props
       .authenticationStore!.login({
@@ -80,78 +79,76 @@ export class Login extends React.Component<Props, State> {
 
   render() {
     return (
-      <Root>
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
-          <View style={[grid.center, styles.logoContainer]}>
-            <Image source={require('../../image/abp-logo-long.png')} style={styles.logo} />
-          </View>
-          <View style={styles.card}>
-            <View style={styles.tenantText}>
-              <Text>Geçerli müşteri:</Text>
-              <Text> {this.state.tenancyName}</Text>
-              <TouchableOpacity onPress={() => this.toggleTenantModal()}>
-                <Text style={{ color: '#00b5ec' }}> (Değiştir)</Text>
-              </TouchableOpacity>
-            </View>
-            <Formik
-              initialValues={{ email: 'admin', password: '123qwe' }}
-              validationSchema={yup.object().shape({
-                email: yup.string().required(),
-                password: yup.string().required(),
-              })}
-              validateOnChange={true}
-              onSubmit={value =>
-                this.login({
-                  userNameOrEmailAddress: value.email,
-                  password: value.password,
-                  rememberMe: true,
-                })
-              }
-            >
-              {({ handleChange, values, handleSubmit, errors, handleBlur }) => (
-                <>
-                  <TextInput
-                    style={[styles.inputs, errors.email && styles.errorInput]}
-                    placeholder="Email Adress"
-                    onSubmitEditing={() => this.password.focus()}
-                    onBlur={handleBlur}
-                    returnKeyType="next"
-                    keyboardType="email-address"
-                    value={values.email}
-                    onChangeText={handleChange('email')}
-                  />
-                  {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
-                  <TextInput
-                    style={[styles.inputs, errors.password && styles.errorInput]}
-                    returnKeyType="done"
-                    ref={(ref: any) => {
-                      this.password = ref;
-                    }}
-                    placeholder="Password"
-                    onSubmitEditing={() => handleSubmit()}
-                    secureTextEntry={true}
-                    keyboardType="default"
-                    value={values.password}
-                    onChangeText={handleChange('password')}
-                  />
-                  {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
-                  <Button style={styles.button} onPress={handleSubmit}>
-                    <Text style={styles.buttonText}>Login</Text>
-                  </Button>
-                </>
-              )}
-            </Formik>
-            <TouchableOpacity onPress={() => {}} style={styles.textButton}>
-              <Text> Forget Password</Text>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <View style={[grid.center, styles.logoContainer]}>
+          <Image source={require('../../image/abp-logo-long.png')} style={styles.logo} />
+        </View>
+        <View style={styles.card}>
+          <View style={styles.tenantText}>
+            <Text>Geçerli müşteri:</Text>
+            <Text> {this.state.tenancyName}</Text>
+            <TouchableOpacity onPress={() => this.toggleTenantModal()}>
+              <Text style={{ color: '#00b5ec' }}> (Değiştir)</Text>
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
+          <Formik
+            initialValues={{ email: 'admin', password: '123qwe' }}
+            validationSchema={yup.object().shape({
+              email: yup.string().required(),
+              password: yup.string().required(),
+            })}
+            validateOnChange={true}
+            onSubmit={value =>
+              this.login({
+                userNameOrEmailAddress: value.email,
+                password: value.password,
+                rememberMe: true,
+              })
+            }
+          >
+            {({ handleChange, values, handleSubmit, errors, handleBlur }) => (
+              <>
+                <TextInput
+                  style={[styles.inputs, errors.email && styles.errorInput]}
+                  placeholder="Email Adress"
+                  onSubmitEditing={() => this.password.focus()}
+                  onBlur={handleBlur}
+                  returnKeyType="next"
+                  keyboardType="email-address"
+                  value={values.email}
+                  onChangeText={handleChange('email')}
+                />
+                {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+                <TextInput
+                  style={[styles.inputs, errors.password && styles.errorInput]}
+                  returnKeyType="done"
+                  ref={(ref: any) => {
+                    this.password = ref;
+                  }}
+                  placeholder="Password"
+                  onSubmitEditing={() => handleSubmit()}
+                  secureTextEntry={true}
+                  keyboardType="default"
+                  value={values.password}
+                  onChangeText={handleChange('password')}
+                />
+                {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+                <Button style={styles.button} onPress={handleSubmit}>
+                  <Text style={styles.buttonText}>Login</Text>
+                </Button>
+              </>
+            )}
+          </Formik>
+          <TouchableOpacity onPress={() => {}} style={styles.textButton}>
+            <Text> Forget Password</Text>
+          </TouchableOpacity>
+        </View>
         <TenantModal
           loading={this.state.isTenantModalOpen}
           isTenantAvaible={(tenantName: string) => this.isTenanAvaible(tenantName)}
           toggleModal={() => this.toggleTenantModal()}
         />
-      </Root>
+      </KeyboardAvoidingView>
     );
   }
 }

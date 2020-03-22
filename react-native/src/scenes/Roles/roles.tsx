@@ -1,5 +1,17 @@
 import React from "react";
-import { View, Fab, Icon, Container, Button, Text, ActionSheet } from "native-base";
+import {
+  View,
+  Fab,
+  Icon,
+  Container,
+  Button,
+  Text,
+  ActionSheet,
+  Header,
+  Item,
+  Input,
+  Right,
+} from "native-base";
 import { NavigationStackProp } from "react-navigation-stack";
 import RoleStore from "../../stores/roleStore";
 import { StyleSheet, RefreshControl } from "react-native";
@@ -11,9 +23,16 @@ export interface Props {
   navigation: NavigationStackProp;
   roleStore: RoleStore;
 }
+import { NavigationScreenProp, NavigationRoute } from "react-navigation";
 
 export interface State {
   reflesing: boolean;
+  maxResultCount: number;
+  skipCount: number;
+  keyword: string;
+}
+export interface Params {
+  count: string;
 }
 
 @inject(Stores.RoleStore)
@@ -21,10 +40,34 @@ export interface State {
 export class Roles extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = { reflesing: false };
+    this.state = { reflesing: false, maxResultCount: 10, skipCount: 0, keyword: '' };
   }
+  static navigationOptions = ({
+    navigation,
+  }: {
+    navigation: NavigationScreenProp<NavigationRoute<Params>, Params>;
+  }) => {
+    return {
+      headerRight: (
+        <Text style={{ marginRight: 10, fontSize: 15 }}>{navigation.getParam('count')}</Text>
+      ),
+    };
+  };
   async componentWillMount() {
-    await this.props.roleStore!.getAll({ maxResultCount: 10, skipCount: 0, keyword: "" });
+    await this.getAll();
+    const { roles } = this.props.roleStore!;
+    this.props.navigation.setParams({
+      count: roles === undefined ? 0 : roles.totalCount,
+    });
+  }
+
+  async getAll() {
+    const { maxResultCount, keyword, skipCount } = this.state;
+    await this.props.roleStore!.getAll({
+      maxResultCount: maxResultCount,
+      skipCount: skipCount * maxResultCount,
+      keyword: keyword,
+    });
   }
 
   async handleReflesh() {
@@ -39,31 +82,58 @@ export class Roles extends React.Component<Props, State> {
 
   render() {
     const { roles } = this.props.roleStore!;
+    const { maxResultCount, skipCount } = this.state;
     return (
       <Container>
+        <Header searchBar rounded>
+          <Item style={{ flex: 2 }}>
+            <Icon name="ios-search" />
+            <Input
+              placeholder="Search"
+              onSubmitEditing={() => this.getAll()}
+              onChange={e => this.setState({ keyword: e.nativeEvent.text, skipCount: 0 })}
+            />
+          </Item>
+          <Right style={{ flex: 1 }}>
+            <Button transparent onPress={() => this.getAll()}>
+              <Text>Search</Text>
+            </Button>
+          </Right>
+        </Header>
         <SwipeListView
-          useFlatList
+          ListFooterComponent={() =>
+            maxResultCount + skipCount * maxResultCount <
+              (roles === undefined ? 0 : roles.totalCount) && (
+              <Button
+                light
+                onPress={() => {
+                  this.setState({ skipCount: this.state.skipCount + 1 }, () => this.getAll());
+                }}
+              >
+                <Text>Daha fazla yükle</Text>
+              </Button>
+            )
+          }
+          keyExtractor={(x, i) => i.toString()}
+          onEndReachedThreshold={0}
+          showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
               refreshing={this.state.reflesing}
               onRefresh={() => this.handleReflesh()}
             />
           }
-          closeOnRowPress
-          closeOnRowOpen
-          closeOnRowBeginSwipe
-          closeOnScroll
           data={roles === undefined ? [] : roles.items}
           renderItem={data => (
             <View style={styles.rowFront}>
-              <Text>{data.item.displayName}</Text>
+              <Text>{data.item.name}</Text>
             </View>
           )}
           renderHiddenItem={data => (
             <View style={styles.rowBack}>
               <Button
                 onPress={() =>
-                  this.props.navigation.navigate("CreateOrEditRoles", {
+                  this.props.navigation.navigate('CreateOrEditRoles', {
                     id: data.item.id,
                   })
                 }
@@ -75,14 +145,14 @@ export class Roles extends React.Component<Props, State> {
                 onPress={() =>
                   ActionSheet.show(
                     {
-                      options: ["Delete", 'Cancel'],
+                      options: ['Delete', "Cancel"],
                       cancelButtonIndex: 1,
                       destructiveButtonIndex: 0,
-                      title: 'Are you sure you want to delete?',
+                      title: "Are you sure you want to delete?",
                     },
                     buttonIndex => {
                       if (buttonIndex === 0) {
-                        this.props.roleStore!.delete({ id: data.item.id });
+                        this.props.roleStore.delete({ id: data.item.id });
                       }
                     },
                   )
@@ -98,11 +168,11 @@ export class Roles extends React.Component<Props, State> {
         />
         <View style={{ flex: 1 }}>
           <Fab
-            style={{ backgroundColor: "#5067FF" }}
+            style={{ backgroundColor: '#5067FF' }}
             position="bottomRight"
             onPress={() =>
-              this.props.navigation.navigate("CreateOrEditRoles", {
-                id: '',
+              this.props.navigation.navigate('CreateOrEditRoles', {
+                id: "",
               })
             }
           >

@@ -1,46 +1,123 @@
 import React, { Component } from 'react';
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { View, Text, Icon, Button, Container, Fab, ActionSheet } from 'native-base';
-import { StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  Icon,
+  Button,
+  Container,
+  Fab,
+  ActionSheet,
+  Header,
+  Item,
+  Input,
+  Right,
+} from 'native-base';
+import { StyleSheet, RefreshControl, Alert, ActivityIndicator } from 'react-native';
 import UserStore from '../../stores/userStore';
 import { observer, inject } from 'mobx-react';
 import Stores from '../../stores/storeIdentifier';
 import { NavigationStackProp } from 'react-navigation-stack';
-
+import { NavigationScreenProp, NavigationRoute } from "react-navigation";
 interface UsersProps {
   userStore: UserStore;
   navigation: NavigationStackProp;
 }
-interface UsersState {}
+
+export interface UsersState {
+  reflesing: boolean;
+  maxResultCount: number;
+  skipCount: number;
+  keyword: string;
+}
+export interface Params {
+  count: string;
+}
 
 @inject(Stores.UserStore)
 @observer
 class Users extends Component<UsersProps, UsersState> {
   constructor(props) {
     super(props);
+    this.state = { reflesing: false, maxResultCount: 10, skipCount: 0, keyword: '' };
   }
-  // static navigationOptions = ({ navigation, navigationOptions }) => {
-  //   return {
-  //     headerRight: () => (
-  //       <Button
-  //         onPress={() => alert('This is a button!')}
-  //         title="Info"
-  //         color="#fff"
-  //         children={<Text>+</Text>}
-  //       />
-  //     ),
-  //   };
-  // };
-
+  static navigationOptions = ({
+    navigation,
+  }: {
+    navigation: NavigationScreenProp<NavigationRoute<Params>, Params>;
+  }) => {
+    return {
+      headerRight: (
+        <Text style={{ marginRight: 10, fontSize: 15 }}>{navigation.getParam('count')}</Text>
+      ),
+    };
+  };
   async componentWillMount() {
-    await this.props.userStore!.getAll({ maxResultCount: 10, skipCount: 0, keyword: '' });
+    await this.getAll();
+    const { users } = this.props.userStore!;
+    this.props.navigation.setParams({
+      count: users === undefined ? 0 : users.totalCount,
+    });
+  }
+  async getAll() {
+    const { maxResultCount, keyword, skipCount } = this.state;
+    await this.props.userStore!.getAll({
+      maxResultCount: maxResultCount,
+      skipCount: skipCount * maxResultCount,
+      keyword: keyword,
+    });
+  }
+
+  async handleReflesh() {
+    this.setState({ reflesing: true, skipCount: 0 }, async () =>
+      this.getAll().then(() => this.setState({ reflesing: false })),
+    );
   }
 
   render() {
     const { users } = this.props.userStore!;
+    const { maxResultCount, skipCount } = this.state;
+
     return (
       <Container>
+        <Header searchBar rounded>
+          <Item style={{ flex: 2 }}>
+            <Icon name="ios-search" />
+            <Input
+              placeholder="Search"
+              onSubmitEditing={() => this.getAll()}
+              onChange={e => this.setState({ keyword: e.nativeEvent.text, skipCount: 0 })}
+            />
+          </Item>
+          <Right style={{ flex: 1 }}>
+            <Button transparent onPress={() => this.getAll()}>
+              <Text>Search</Text>
+            </Button>
+          </Right>
+        </Header>
         <SwipeListView
+          ListFooterComponent={() =>
+            maxResultCount + skipCount * maxResultCount <
+              (users === undefined ? 0 : users.totalCount) && (
+              <Button
+                light
+                onPress={() => {
+                  this.setState({ skipCount: this.state.skipCount + 1 }, () => this.getAll());
+                }}
+              >
+                <Text>Daha fazla yükle</Text>
+              </Button>
+            )
+          }
+          keyExtractor={(x, i) => i.toString()}
+          onEndReachedThreshold={0}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.reflesing}
+              onRefresh={() => this.handleReflesh()}
+            />
+          }
           data={users === undefined ? [] : users.items}
           renderItem={data => (
             <View style={styles.rowFront}>

@@ -49,7 +49,6 @@ export class Setting extends React.Component<Props, State> {
   };
 
   changePassword = async values => {
-    debugger;
     await this.props
       .userStore!.changePassword({
         currentPassword: values.currentPassword,

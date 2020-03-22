@@ -13,39 +13,23 @@ import { Provider } from 'mobx-react';
 import initializeStores from './stores/storeInitializer';
 import RoutingContainer from './components/routing/routingConfig';
 
-
-
-
 const stores = initializeStores();
 console.disableYellowBox = true;
-interface Props {
-
-}
+interface Props {}
 interface State {
-  appState:any
+  appState: any;
 }
 
-export default class App extends React.Component<Props,State> {
+export default class App extends React.Component<Props, State> {
   constructor(props) {
     super(props);
   }
 
-
   render() {
-    
     return (
       <Provider {...stores}>
-         <RoutingContainer/>
+        <RoutingContainer />
       </Provider>
     );
   }
 }
-
-
-
-
-
-
-
-
-

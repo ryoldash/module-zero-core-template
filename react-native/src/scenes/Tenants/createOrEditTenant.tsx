@@ -57,7 +57,6 @@ export class CreateOrEditTenant extends React.Component<Props, State> {
           <Icon type="MaterialIcons" name="keyboard-arrow-left" style={{ color: "black" }} />
         </Button>
       ),
-      // headerRight: <Text>{navigation.getParam('id')}</Text>,
     };
   };
 
@@ -91,7 +90,7 @@ export class CreateOrEditTenant extends React.Component<Props, State> {
           connectionString: value.databaseConnectionString,
           adminEmailAddress: value.emailAdress,
         })
-        .then(() => _toast('Tenant Oluşturuldu', 'success'));
+        .then(() => _toast('Tenant Oluşturuldu', "success"));
     }
   };
 
@@ -125,10 +124,19 @@ export class CreateOrEditTenant extends React.Component<Props, State> {
                         .required(),
                     }),
                   })}
+                  validateOnBlur={true}
                   validateOnChange={true}
                   onSubmit={value => this.createOrUpdateTenant(value)}
                 >
-                  {({ handleChange, values, handleSubmit, errors, handleBlur, setFieldValue }) => (
+                  {({
+                    handleChange,
+                    values,
+                    handleSubmit,
+                    errors,
+                    handleBlur,
+                    setFieldValue,
+                    isValid,
+                  }) => (
                     <>
                       <Item
                         style={styles.marginVrtcl}
@@ -161,16 +169,16 @@ export class CreateOrEditTenant extends React.Component<Props, State> {
                         <Input
                           onSubmitEditing={() => {
                             if (this.isEdit()) {
-                              this.databaseConnectionString._root.focus();
-                            } else {
                               handleSubmit();
+                            } else {
+                              this.databaseConnectionString._root.focus();
                             }
                           }}
                           onBlur={handleBlur}
                           getRef={(ref: any) => {
                             this.name = ref;
                           }}
-                          returnKeyType={this.isEdit() ? "next" : "done"}
+                          returnKeyType={this.isEdit() ? "done" : "next"}
                           value={values.name}
                           onChangeText={handleChange("name")}
                         />
@@ -241,7 +249,13 @@ export class CreateOrEditTenant extends React.Component<Props, State> {
 
                       {!this.isEdit() && <Label>Default Password 123qwe</Label>}
 
-                      <Button onPress={handleSubmit} style={styles.marginVrtcl} block rounded>
+                      <Button
+                        onPress={handleSubmit}
+                        disabled={!isValid}
+                        style={styles.marginVrtcl}
+                        block
+                        rounded
+                      >
                         <Text>Save</Text>
                       </Button>
                     </>

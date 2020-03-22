@@ -79,7 +79,14 @@ class RoleStore {
   @action
   async getAll(pagedFilterAndSortedRequest: PagedRoleResultRequestDto) {
     let result = await roleService.getAll(pagedFilterAndSortedRequest);
-    this.roles = result;
+    if (pagedFilterAndSortedRequest.skipCount === 0) {
+      this.roles = result;
+    } else {
+      this.roles = {
+        items: this.roles.items.concat(result.items),
+        totalCount: result.totalCount,
+      };
+    }
   }
 }
 

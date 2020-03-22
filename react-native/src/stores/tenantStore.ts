@@ -33,7 +33,9 @@ class TenantStore {
     let result = await tenantService.update(updateTenantInput);
 
     this.tenants.items = this.tenants.items.map((x: GetAllTenantOutput) => {
-      if (x.id === updateTenantInput.id) x = result;
+      if (x.id === updateTenantInput.id) {
+        x = result;
+      }
       return x;
     });
   }
@@ -41,7 +43,9 @@ class TenantStore {
   @action
   async delete(entityDto: EntityDto) {
     await tenantService.delete(entityDto);
-    this.tenants.items = this.tenants.items.filter((x: GetAllTenantOutput) => x.id !== entityDto.id);
+    this.tenants.items = this.tenants.items.filter(
+      (x: GetAllTenantOutput) => x.id !== entityDto.id,
+    );
   }
 
   @action
@@ -53,7 +57,14 @@ class TenantStore {
   @action
   async getAll(pagedFilterAndSortedRequest: PagedTenantResultRequestDto) {
     let result = await tenantService.getAll(pagedFilterAndSortedRequest);
-    this.tenants = result;
+    if (pagedFilterAndSortedRequest.skipCount === 0) {
+      this.tenants = result;
+    } else {
+      this.tenants = {
+        items: this.tenants.items.concat(result.items),
+        totalCount: result.totalCount,
+      };
+    }
   }
 }
 

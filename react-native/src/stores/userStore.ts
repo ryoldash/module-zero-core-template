@@ -9,7 +9,6 @@ import { PagedUserResultRequestDto } from '../services/user/dto/PagedUserResultR
 import { UpdateUserInput } from '../services/user/dto/updateUserInput';
 import userService from '../services/user/userService';
 import { UserModel } from '../models/Users/UserModel';
-import { ChangePassword } from '../services/user/dto/changePassword';
 import { ChangePasswordInput } from '../services/user/dto/changePasswordInput';
 
 class UserStore {
@@ -25,7 +24,6 @@ class UserStore {
 
   @action
   async update(updateUserInput: UpdateUserInput) {
-    debugger;
     let result = await userService.update(updateUserInput);
     this.users.items = this.users.items.map((x: GetUserOutput) => {
       if (x.id === updateUserInput.id) {
@@ -71,7 +69,11 @@ class UserStore {
   @action
   async getAll(pagedFilterAndSortedRequest: PagedUserResultRequestDto) {
     let result = await userService.getAll(pagedFilterAndSortedRequest);
-    this.users = result;
+    if (pagedFilterAndSortedRequest.skipCount === 0) {
+      this.users = result;
+    } else {
+      this.users = { items: this.users.items.concat(result.items), totalCount: result.totalCount };
+    }
   }
 
   async changeLanguage(languageName: string) {

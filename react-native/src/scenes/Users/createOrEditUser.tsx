@@ -34,7 +34,7 @@ export interface Props {
 
 interface RoleSwitch {
   name: string;
-  displayName: string;
+  normalizedName: string;
   value: boolean;
 }
 
@@ -66,7 +66,6 @@ export class CreateOrEdituser extends React.Component<Props, State> {
           <Icon type="MaterialIcons" name="keyboard-arrow-left" style={{ color: "black" }} />
         </Button>
       ),
-      // headerRight: <Text>{navigation.getParam('id')}</Text>,
     };
   };
 
@@ -85,13 +84,18 @@ export class CreateOrEdituser extends React.Component<Props, State> {
   }
 
   createOrUpdateTenant = async values => {
-    values.roleNames = values.roleNames
+    const roleName = values.roleNames
       .filter((x: RoleSwitch) => x.value === true)
-      .map((x: RoleSwitch) => x.name);
+      .map((x: RoleSwitch) => x.normalizedName);
+
     if (this.isEdit()) {
       await this.props.userStore
-        .update({ id: this.props.navigation.getParam("id"), ...values })
-        .then(() => _toast('Tenant Oluşturuldu', 'success'));
+        .update({ id: this.props.navigation.getParam("id"), ...values, roleNames: roleName })
+        .then(() => _toast('User Update Edildi', 'success'));
+    } else {
+      await this.props
+        .userStore!.create({ ...values, roleNames: roleName })
+        .then(() => _toast('User Oluşturuldu', 'success'));
     }
   };
 
@@ -99,14 +103,14 @@ export class CreateOrEdituser extends React.Component<Props, State> {
     const { editUser, roles } = this.props.userStore!;
     const grantedPermissions = roles.map((x: GetRoles) => {
       if (editUser.roleNames.indexOf(x.normalizedName) !== -1) {
-        return { value: true, name: x.name, displayName: x.displayName };
+        return { value: true, name: x.name, normalizedName: x.normalizedName };
       } else {
-        return { value: false, name: x.name, displayName: x.displayName };
+        return { value: false, name: x.name, normalizedName: x.normalizedName };
       }
     });
     return (
       <Container>
-        <Content padder>
+        <Content enableResetScrollToCoords={true}>
           <Card>
             <CardItem bordered>
               <Body>
@@ -115,7 +119,7 @@ export class CreateOrEdituser extends React.Component<Props, State> {
                     name: editUser.name,
                     surname: editUser.surname,
                     userName: editUser.userName,
-                    emailAdress: editUser.emailAddress,
+                    emailAddress: editUser.emailAddress,
                     password: editUser.password,
                     confirmPassword: editUser.password,
                     isEdit: this.isEdit(),
@@ -127,7 +131,7 @@ export class CreateOrEdituser extends React.Component<Props, State> {
                     name: yup.string().required(),
                     surname: yup.string().required(),
                     userName: yup.string().required(),
-                    emailAdress: yup
+                    emailAddress: yup
                       .string()
                       .email()
                       .required(),
@@ -153,9 +157,17 @@ export class CreateOrEdituser extends React.Component<Props, State> {
                     ),
                   })}
                   validateOnChange={true}
-                  onSubmit={value => this.createOrUpdateTenant(value)}
+                  onSubmit={this.createOrUpdateTenant}
                 >
-                  {({ handleChange, values, handleSubmit, errors, handleBlur, setFieldValue }) => (
+                  {({
+                    handleChange,
+                    values,
+                    handleSubmit,
+                    errors,
+                    handleBlur,
+                    setFieldValue,
+                    isValid,
+                  }) => (
                     <>
                       <Item
                         style={styles.marginVrtcl}
@@ -171,7 +183,7 @@ export class CreateOrEdituser extends React.Component<Props, State> {
                           value={values.userName}
                           onChangeText={handleChange("userName")}
                         />
-                        {errors.name ? (
+                        {errors.userName ? (
                           <Icon name="close-circle" />
                         ) : (
                           <Icon name="checkmark-circle" />
@@ -227,8 +239,8 @@ export class CreateOrEdituser extends React.Component<Props, State> {
                       </Item>
                       <Item
                         style={styles.marginVrtcl}
-                        error={!!errors.emailAdress}
-                        success={!errors.emailAdress}
+                        error={!!errors.emailAddress}
+                        success={!errors.emailAddress}
                         floatingLabel
                       >
                         <Label>Email</Label>
@@ -246,10 +258,10 @@ export class CreateOrEdituser extends React.Component<Props, State> {
                             this.emailAdress = ref;
                           }}
                           returnKeyType={this.isEdit() ? 'done' : 'next'}
-                          value={values.emailAdress}
-                          onChangeText={handleChange("emailAdress")}
+                          value={values.emailAddress}
+                          onChangeText={handleChange("emailAddress")}
                         />
-                        {errors.emailAdress ? (
+                        {errors.emailAddress ? (
                           <Icon name="close-circle" />
                         ) : (
                           <Icon name="checkmark-circle" />
@@ -268,6 +280,7 @@ export class CreateOrEdituser extends React.Component<Props, State> {
                               this.password = ref;
                             }}
                             returnKeyType="next"
+                            secureTextEntry={true}
                             onSubmitEditing={() => this.confirmPassword._root.focus()}
                             onBlur={handleBlur}
                             value={values.password}
@@ -293,6 +306,7 @@ export class CreateOrEdituser extends React.Component<Props, State> {
                               this.confirmPassword = ref;
                             }}
                             returnKeyType="done"
+                            secureTextEntry={true}
                             onSubmitEditing={() => Keyboard.dismiss()}
                             onBlur={handleBlur}
                             value={values.confirmPassword}
@@ -341,12 +355,18 @@ export class CreateOrEdituser extends React.Component<Props, State> {
                                   })
                                 }
                               />
-                              <Label>{x.displayName}</Label>
+                              <Label>{x.name}</Label>
                             </View>
                           );
                         })}
                       </View>
-                      <Button onPress={handleSubmit} style={styles.marginVrtcl} block rounded>
+                      <Button
+                        disabled={!isValid}
+                        onPress={handleSubmit}
+                        style={styles.marginVrtcl}
+                        block
+                        rounded
+                      >
                         <Text>{this.isEdit() ? 'Save' : 'Create'}</Text>
                       </Button>
                     </>
